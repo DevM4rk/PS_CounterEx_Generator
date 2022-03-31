@@ -8,7 +8,7 @@ using namespace std;
 random_device rd;
 
 template <typename T>
-T randNum(T min, T max){
+string randNum(T min, T max){
     //난수 생성 엔진 초기화
     mt19937 gen(rd());  
 
@@ -16,7 +16,7 @@ T randNum(T min, T max){
     uniform_int_distribution<T> dis(min, max);      //정수 타입, min이상 ~ max이하
     //uniform_real_distribution<T> dis(min, max);   //실수 타입, min이상 ~ max미만
 
-    return dis(gen);
+    return to_string(dis(gen));
 }
 
 //userSetInput.h
@@ -24,15 +24,22 @@ T randNum(T min, T max){
 typedef long long ll;
 
 int boj;
-
 string SetInput(){
+    /*
+    사용자가 입력 범위와 형식에 맞춰서 로직 구현 필요
+
+    template <typename T>
+    string randNum<T>(T min, T max)  -  min 이상, max 이하의 난수 반환 (실수일 때는 max 미만)
+
+    참고
     boj = 22251;
-    int k = randNum<int>(1,6);
-    int p = randNum<int>(1,42);
-    int n = randNum<int>(1,pow(10,k)-1);
-    int x = randNum<int>(1,n); 
+    string k = randNum<int>(1,6);
+    string p = randNum<int>(1,42);
+    string n = randNum<int>(1, pow(10,stoi(k))-1);
+    string x = randNum<int>(1,stoi(n)); 
     
-    return to_string(n) + ' ' + to_string(k) + ' ' + to_string(p) + ' ' + to_string(x);
+    return n + ' ' + k + ' ' + p + ' ' + x;
+    */
 }
 
 void Init(){
