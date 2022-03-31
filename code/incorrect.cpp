@@ -27,14 +27,14 @@ int num[10][7] = {
     {1,1,1,1,0,1,1}  // 9
 };
 
-int k,p,ans;
-string n,x;
+int n,k,p,ans;
+string x;
 
 void dfs(int idx, int cnt, string s){  //k, p check
     
-    if(idx == k || idx == n.size()){
-        if(s == x || stoi(s) > stoi(n) || stoi(s) == 0) return; // 시작층과 같은경우. n을 넘는 경우, 0층인 경우
-        // cout << s << endl;
+    if(idx == k){
+        if(s == x || stoi(s) > n || stoi(s) == 0) return; // 시작층과 같은경우. n을 넘는 경우, 0층인 경우
+        //cout << s << endl;
         ans++;
         return;
     }
@@ -60,10 +60,6 @@ int main(){
     cin.tie(nullptr); cout.tie(nullptr);
 
     cin >> n >> k >> p >> x;
-    
-    while(x.size() < n.size()){
-        x.insert(0, "0");
-    }
 
     dfs(0,p, x);
 
@@ -75,33 +71,4 @@ int main(){
  -   4
 | | 5 6
  -   7
-*/
-
-/*
-반례
-boj - 22251
-[2022.4.1/2:44:9]   1sec
-
-[input]
-205 4 37 108
-
-[answer]
-204
-
-[wrong]
-2040
-
-2차반례
-boj - 22251
-[2022.4.1/3:0:47]	0sec
-
-[input]
-108075 6 31 46875
-
-[answer]
-108074
-
-[wrong]
-999880
-
 */
