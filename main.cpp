@@ -7,6 +7,7 @@ using namespace std;
 //시드값
 random_device rd;
 
+//Return Random Number 
 template <typename T>
 string randNum(T min, T max){
     //난수 생성 엔진 초기화
@@ -19,6 +20,37 @@ string randNum(T min, T max){
     return to_string(dis(gen));
 }
 
+//Return Random Alphabet
+string randAlpha(int len, int letterCase=0, bool duplication=true, unordered_set<string> *dup=NULL){    // 반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소
+    
+    mt19937 gen(rd());  
+    uniform_int_distribution<int> dis(0, 51);   //알파벳 개수 - 26
+
+    while(true){
+        string ret;
+        for(int i=0; i<len; ++i){
+            if(letterCase == 0)
+                ret += 'a' + dis(gen)%26;    //소문자
+            else if(letterCase == 1)
+                ret += 'A' + dis(gen)%26;    //대문자
+            else   //letterCase == 2
+                ret += 'a' + dis(gen);       //구분 없음
+        }
+
+        if(duplication){
+            return ret;
+        }
+        else{
+            if(!dup->count(ret)){   // 중복없음이고 이미 나온 문자가 아닌 경우 return
+                dup->insert(ret);
+                return ret;
+            }
+        }
+    }
+
+    return "";
+}
+
 //userSetInput.h
 
 typedef long long ll;
@@ -28,17 +60,49 @@ string SetInput(){
     /*
     사용자가 입력 범위와 형식에 맞춰서 로직 구현 필요
 
-    template <typename T>
     string randNum<T>(T min, T max)  -  min 이상, max 이하의 난수 반환 (실수일 때는 max 미만)
-
-    참고
-    boj = 22251;
-    string k = randNum<int>(1,6);
-    string p = randNum<int>(1,42);
-    string n = randNum<int>(1, pow(10,stoi(k))-1);
-    string x = randNum<int>(1,stoi(n)); 
     
-    return n + ' ' + k + ' ' + p + ' ' + x;
+    string randAlpha(int len, int letterCase=0, bool duplication=true, unordered_set<string> *dup=NULL) - (반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소)
+    */
+    
+    /*
+    //참고1
+    boj = 22251;
+    string ret;
+    string k,p,n,x;
+
+    k = randNum<int>(1,6);
+    p = randNum<int>(1,42);
+    n = randNum<int>(1, pow(10,stoi(k))-1);
+    x = randNum<int>(1,stoi(n)); 
+    
+    ret = n + ' ' + k + ' ' + p + ' ' + x;          // 공백 표현을 ' ' 이 아닌 " "로 하게 될 경우 에러 발생 주의
+    
+    return ret;
+    */
+
+    /*
+    //참고2
+    boj = 20006;
+    string ret;
+    string p,m,l,n;
+    unordered_set<string> name;
+
+    p = randNum<int>(1,300);
+    m = randNum<int>(1,300);
+
+    ret = p + ' ' + m + '\n';
+
+    for(int i=0; i<stoi(p); ++i){
+        l = randNum<int>(1,500);
+        n = randAlpha(2,0,false,&name);
+        //n을 구할 때, 문제에서 닉네임의 길이가 16까지 된다고 했지만 플레이어의 수는 최대 300명이고 
+        //알파벳 소문자 두개로 가능한 경우의 수는 26*26 = 676개이므로 두개를 조합하여 구함.
+
+        ret += l + ' ' + n + '\n';
+    }
+
+    return ret;
     */
 }
 
@@ -117,7 +181,7 @@ int main(){
                 diff = true;
             }
             else{
-                for(int i=0; i<answer.size(); i++){
+                for(int i=0; i<answer.size(); ++i){
                     if(answer[i] == wrong[i]) continue; // 라인 내의 출력값이 다를 경우
                     diff = true;
                     break;
