@@ -2,14 +2,14 @@
 
 using namespace std;
 
-//randomNum.h
+//randomSet.h
 
 //시드값
 random_device rd;
 
-//Return Random Number 
+//Return Random Number - min 이상, max 이하의 난수 반환 (실수일 때는 max 미만)
 template <typename T>
-string randNum(T min, T max){
+string randNum(T min, T max, bool duplication=true, unordered_set<string> *dup=NULL){   // 최솟값 / 최댓값 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소
     //난수 생성 엔진 초기화
     mt19937 gen(rd());  
 
@@ -17,14 +17,27 @@ string randNum(T min, T max){
     uniform_int_distribution<T> dis(min, max);      //정수 타입, min이상 ~ max이하
     //uniform_real_distribution<T> dis(min, max);   //실수 타입, min이상 ~ max미만
 
-    return to_string(dis(gen));
+    while(true){
+        string ret = to_string(dis(gen));
+
+        if(duplication){
+            return ret;
+        }
+        else{
+            if(!dup->count(ret)){   // 중복없음이고 이미 나온 문자가 아닌 경우 return
+                dup->insert(ret);
+                return ret;
+            }
+        }
+    }
+    return "";
 }
 
-//Return Random Alphabet
+//Return Random Alphabet - 문자 종류(소,대,모두)내에서 설정한 길이만큼 랜덤한 알파벳 반환
 string randAlpha(int len, int letterCase=0, bool duplication=true, unordered_set<string> *dup=NULL){    // 반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소
     
     mt19937 gen(rd());  
-    uniform_int_distribution<int> dis(0, 51);   //알파벳 개수 - 26
+    uniform_int_distribution<int> dis(0, 51);   //알파벳 개수 = 26
 
     while(true){
         string ret;
@@ -60,9 +73,11 @@ string SetInput(){
     /*
     사용자가 입력 범위와 형식에 맞춰서 로직 구현 필요
 
-    string randNum<T>(T min, T max)  -  min 이상, max 이하의 난수 반환 (실수일 때는 max 미만)
+    string randNum<T>(T min, T max, bool duplication=true, unordered_set<string> *dup=NULL)
+    - (반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소)
     
-    string randAlpha(int len, int letterCase=0, bool duplication=true, unordered_set<string> *dup=NULL) - (반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소)
+    string randAlpha(int len, int letterCase=0, bool duplication=true, unordered_set<string> *dup=NULL) 
+    - (반환받을 길이 / 0소문자, 1대문자, 2구분없음 / 0중복없음, 1중복있음 / 중복있다면 중복체크 할 set 주소)
     */
     
     /*
