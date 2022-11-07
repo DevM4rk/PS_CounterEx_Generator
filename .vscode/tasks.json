@@ -11,7 +11,7 @@
             "label": "save and compile for C++",
             "command": "g++",
             "args": [
-                "${file}",
+                "${fileDirname}/*.cpp",
                 "-g",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
@@ -36,7 +36,7 @@
             "label": "save and compile for C",
             "command": "gcc",
             "args": [
-                "${file}",
+                "${fileDirname}/*.cpp",
                 "-g",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
@@ -72,7 +72,7 @@
             "command": "C:/mingw64/bin/g++.exe",
             "args": [
                 "-g",
-                "${file}",
+                "${fileDirname}/*.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
